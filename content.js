@@ -1,34 +1,13 @@
-(function() {
-  'use strict';
+(function () {
+  "use strict";
 
-  const privilegedExec = Object.getOwnPropertyDescriptor(
-      Document.prototype,
-      "execCommand"
-  ).value;
-
-  function allowPastingOnDocument(doc) {
-    doc.execCommand = exportFunction(function () {
-      return privilegedExec.apply(this, arguments);
-    }, window);
+  function tryPaste(doc, cmd) {
+    if (cmd.toLowerCase() === "paste") {
+      Document.prototype.execCommand.call(doc, "paste");
+      return true;
+    }
+    throw "Command called with execCommand is not a paste";
   }
-  allowPastingOnDocument(document.wrappedJSObject);
 
-  const { queryCommandSupported } = Document.prototype.wrappedJSObject;
-
-  Object.defineProperty(
-      Document.prototype.wrappedJSObject,
-      "queryCommandSupported",
-      {
-        configurable: true,
-        enumerable: true,
-        writable: true,
-        value: exportFunction(function (commandId) {
-          if (commandId.toLowerCase() === "paste") {
-            return true;
-          }
-
-          return queryCommandSupported.call(this, commandId);
-        }, window),
-      }
-  );
+  window.wrappedJSObject._overrideExecCommand?.(exportFunction(tryPaste, window));
 })();

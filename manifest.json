@@ -1,12 +1,21 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Enable context menu Paste on Google Docs",
   "version": "1.0",
   "description": "Allows to use context menu options for Google Docs, such as Paste, Paste Special and Paste from Markdown",
-  "permissions": [
-    "clipboardRead"
-  ],
+  "permissions": ["clipboardRead"],
   "content_scripts": [
+    {
+      "matches": [
+        "https://docs.google.com/document/*",
+        "https://docs.google.com/spreadsheets/*",
+        "https://docs.google.com/presentation/*"
+      ],
+      "js": ["main.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "world": "MAIN"
+    },
     {
       "matches": [
         "https://docs.google.com/document/*",
@@ -15,7 +24,8 @@
       ],
       "js": ["content.js"],
       "run_at": "document_start",
-      "all_frames": true
+      "all_frames": true,
+      "world": "ISOLATED"
     }
   ]
 }

@@ -1,0 +1,15 @@
+{
+  "name": "google-paste",
+  "version": "1.0.0",
+  "description": "An addon allowing to use menu options for Google Docs, such as Paste, Paste Special and Paste from Markdown",
+  "type": "module",
+  "scripts": {
+    "lint": "npx prettier --write .",
+    "lint-check": "npx prettier --check ."
+  },
+  "keywords": [],
+  "author": "",
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}
